@@ -32,7 +32,28 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+/* CUstom Fonts */
+
+@font-face {
+  font-family: IBM;
+  src: url("/public/fonts/IBM-font/IBMPlexSansArabic-Regular.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: IBM;
+  src: url("/public/fonts/IBM-font/IBMPlexSansArabic-Light.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: IBM;
+  src: url("/public/fonts/IBM-font/IBMPlexSansArabic-Medium.ttf");
+  font-weight: 600;
 }
