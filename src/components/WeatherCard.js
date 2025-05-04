@@ -17,6 +17,8 @@ let cancelAxios = null;
 moment.locale("ar"); // Set the locale to Arabic
 export default function WeatherCard() {
   const { t, i18n } = useTranslation();
+
+  // ========== States ==========
   const [dateAndTime, setDateAndTime] = useState("");
   console.log(dateAndTime);
   const [temp, setTemp] = useState({
@@ -26,6 +28,26 @@ export default function WeatherCard() {
     max: null,
     icon: null,
   });
+  const [locale, setLocale] = useState("ar"); // Default locale is Arabic
+
+  // ==========Event Handlers==========
+
+  function handleLanguageChange() {
+    if (locale === "en") {
+      setLocale("ar"); // Change to Arabic
+      i18n.changeLanguage("ar");
+      moment.locale("ar");
+    } else {
+      setLocale("en"); // Change to English
+      i18n.changeLanguage("en");
+      moment.locale("en");
+    }
+    setDateAndTime(moment().format("dddd Do MMMM YYYY"));
+  }
+
+  useEffect(() => {
+    i18n.changeLanguage(locale); // Set the language to Arabic
+  }, []);
   useEffect(() => {
     setDateAndTime(moment().format("dddd MMMM YYYY"));
     axios
@@ -66,7 +88,7 @@ export default function WeatherCard() {
   }, []);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       {/* Content Container */}
       <div
         style={{
@@ -79,7 +101,7 @@ export default function WeatherCard() {
       >
         {/* CARD */}
         <div
-          dir="rtl"
+          dir={locale === "ar" ? "rtl" : "ltr"}
           style={{
             width: "100%",
             padding: "20px",
@@ -93,7 +115,7 @@ export default function WeatherCard() {
           <div style={{}}>
             {/* City & Time */}
             <div
-              dir="rtl"
+              dir={locale === "ar" ? "rtl" : "ltr"}
               style={{
                 display: "flex",
                 justifyContent: "start",
@@ -101,11 +123,11 @@ export default function WeatherCard() {
               }}
             >
               <Typography
-                variant="h2"
+                variant="h3"
                 component="h2"
-                style={{ marginRight: "20px", fontWeight: "600" }}
+                style={{ marginRight: "20px", fontWeight: "500" }}
               >
-                الجيزة
+                {t("6 October City")}
               </Typography>
               <Typography
                 variant="h5"
@@ -140,7 +162,7 @@ export default function WeatherCard() {
                 </div>
                 {/* ===TEMP=== */}
                 <Typography variant="h6" component="h1">
-                  {temp.description}
+                  {t(temp.description)}
                 </Typography>
                 {/* MIN & MAX */}
                 <div
@@ -150,9 +172,13 @@ export default function WeatherCard() {
                     alignItems: "center",
                   }}
                 >
-                  <h5>الصغرى : {temp.min}</h5>
+                  <h5>
+                    {t("Min")} : {temp.min}
+                  </h5>
                   <h5 style={{ margin: "0px 5px" }}>|</h5>
-                  <h5>الكبرى : {temp.max}</h5>
+                  <h5>
+                    {t("Max")} : {temp.max}
+                  </h5>
                 </div>
               </div>
               {/* ===Degree & Description=== */}
@@ -164,7 +190,7 @@ export default function WeatherCard() {
         {/* ===CARD=== */}
         {/* Translation Button */}
         <div
-          dir="rtl"
+          dir={locale === "ar" ? "rtl" : "ltr"}
           style={{
             display: "flex",
             justifyContent: "end",
@@ -172,8 +198,12 @@ export default function WeatherCard() {
             marginTop: "20px",
           }}
         >
-          <Button variant="text" style={{ color: "white" }}>
-            انجليزى
+          <Button
+            variant="text"
+            style={{ color: "white" }}
+            onClick={handleLanguageChange}
+          >
+            {locale === "en" ? t("Arabic") : t("انجليزي")}
           </Button>
         </div>
         {/* ===Translation Button=== */}
